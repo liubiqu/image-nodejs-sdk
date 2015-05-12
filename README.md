@@ -5,7 +5,13 @@ nodejs sdk for [腾讯云万象图片与微视频服务](http://app.qcloud.com/i
 npm install tencentyun
 
 ## 修改配置
-修改conf.js内的appid等信息为您的配置
+修改conf.js文件内如下appid配置，改为您对应app的信息
+```javascript
+// 请到app.qcloud.com查看您对应的appid相关信息并填充
+exports.APPID = '您的APPID';
+exports.SECRET_ID = '您的SECRET_ID';
+exports.SECRET_KEY = '您的SECRET_KEY';
+```
 
 ## 微视频上传、查询、删除程序示例
 ```javascript
