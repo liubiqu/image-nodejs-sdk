@@ -17,6 +17,19 @@ exports.SECRET_KEY = '您的SECRET_KEY';
 ```javascript
 var tencentyun = require('tencentyun');
 
+tencentyun.image.upload('./154633894.jpg', function(ret){
+    var fileid = ret.data.fileid;
+
+    tencentyun.image.stat(fileid, function(ret) {
+        console.log(ret);
+    });
+
+    var fileid = ret.data.fileid;
+    tencentyun.image.delete(fileid, function(ret) {
+        console.log(ret);
+    });
+});
+
 //简单上传
 tencentyun.video.upload('/tmp/085523020515bc3137630770.mp4');
 

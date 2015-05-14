@@ -1,6 +1,6 @@
 var tencentyun = require('../');
 
-var ret = tencentyun.image.upload('./154633894.jpg', function(ret){
+tencentyun.image.upload('./154633894.jpg', function(ret){
     var fileid = ret.data.fileid;
 
     tencentyun.image.stat(fileid, function(ret) {
