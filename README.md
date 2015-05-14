@@ -13,7 +13,7 @@ exports.SECRET_ID = '您的SECRET_ID';
 exports.SECRET_KEY = '您的SECRET_KEY';
 ```
 
-## 微视频上传、查询、删除程序示例
+## 图片和微视频上传、查询、删除程序示例
 ```javascript
 var tencentyun = require('tencentyun');
 
