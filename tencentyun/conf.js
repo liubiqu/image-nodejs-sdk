@@ -3,9 +3,9 @@ var path = require('path');
 var os = require('os');
 
 // 请到app.qcloud.com查看您对应的appid相关信息并填充
-exports.APPID = '您的APPID';
-exports.SECRET_ID = '您的SECRET_ID';
-exports.SECRET_KEY = '您的SECRET_KEY';
+exports.APPID = '200679';
+exports.SECRET_ID = 'AKIDoleG4e6U0j6EVQcjWXxzSO2Vv7Hqlgp2';
+exports.SECRET_KEY = 'ROlw3XYdNXNnII18ATs6zd7m5mivnApa';
 
 var pkg = JSON.parse(fs.readFileSync(path.join(__dirname, '../', 'package.json')));
 var ua = function() {

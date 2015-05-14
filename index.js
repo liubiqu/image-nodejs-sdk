@@ -5,4 +5,5 @@ module.exports = {
   auth:     require(libpath + '/auth.js'),
   conf:     require(libpath + '/conf.js'),
   video:    require(libpath + '/video.js'),
+  image:    require(libpath + '/image.js'),
 };
