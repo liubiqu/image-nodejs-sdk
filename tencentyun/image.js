@@ -10,20 +10,15 @@ var conf = require('./conf');
 var EXPIRED_SECONDS = 2592000;
 
 /**
- * 上传本地视频文件
- * @param  {string}   filePath     视频本地路径，必须
+ * 上传本地图片文件
+ * @param  {string}   filePath     图片本地路径，必须
  * @param  {Function} callback     用户上传完毕后执行的回调函数，可选，默认输出日志
  *                                 入参为ret：{'httpcode':200,'code':0,'message':'ok','data':{...}}
  * @param  {string}   userid       用户自定义的业务ID，可选，默认为0
- * @param  {object}   fileInfo     文件信息，可以为NULL
- *                                 sha       : 视频文件的sha
- *                                 title     : 视频的标题
- *                                 desc      : 视频的描述
- *                                 coverframe: 使用第几秒的关键帧作为视频封面(只有使用了转码的业务才有封面)
  * @param  {string}   magicContext 业务附加信息,用于透传回调用者的业务后台，可以为NULL
  * @return NULL
  */
-exports.upload = function(filePath, callback, userid, fileInfo, magicContext) {
+exports.upload = function(filePath, callback, userid, magicContext) {
 
     var isExists = fs.existsSync(filePath);
     userid = userid || 0;
@@ -35,22 +30,7 @@ exports.upload = function(filePath, callback, userid, fileInfo, magicContext) {
         var sign  = auth.appSign(url, expired);
         var urlInfo = urlM.parse(url);
         var form = formstream();
-        
-        if (fileInfo) {
-            if (fileInfo.sha) {
-                form.field('Sha', fileInfo.sha);
-            }
-            if (fileInfo.title) {
-                form.field('Title', fileInfo.title);
-            }
-            if (fileInfo.desc) {
-                form.field('Desc', fileInfo.desc);
-            }
-            if (fileInfo.coverframe) {
-                form.field('coverframe', fileInfo.coverframe);
-            }
-        }
-        
+                
         if (magicContext) {
             form.field('magiccontext', magicContext);
         }
@@ -90,7 +70,6 @@ exports.upload = function(filePath, callback, userid, fileInfo, magicContext) {
 
                     if (0 == ret.code) {
                         result.data = {
-                            'coverUrl':ret.data.cover_url || '', 
                             'downloadUrl':ret.data.download_url || '',
                             'fileid':ret.data.fileid || '',
                             'url':ret.data.url || ''
@@ -115,7 +94,7 @@ exports.upload = function(filePath, callback, userid, fileInfo, magicContext) {
 
 /**
  * 查询视频
- * @param  {string}   fileid   视频文件唯一ID
+ * @param  {string}   fileid   图片文件唯一ID
  * @param  {Function} callback 用户查询完毕后执行的回调函数，可选，默认输出日志
  *                             入参为ret：{'httpcode':200,'code':0,'message':'ok','data':{...}}
  * @param  {string}   userid   用户自定义业务ID，可选，默认为0
@@ -161,15 +140,13 @@ exports.stat = function(fileid, callback, userid) {
 
                     if (0 == ret.code) {
                         result.data = {
-                            'fileSha':ret.data.file_sha || '', 
-                            'fileSize':ret.data.file_size || '',
-                            'fileUploadTime':ret.data.file_upload_time || '',
-                            'fileUrl':ret.data.file_url || '',
-                            'videoCoverUrl':ret.data.video_cover_url || '', 
-                            'videoDesc':ret.data.video_desc || '', 
-                            'videoStatus':ret.data.video_status || '', 
-                            'videoStatusMsg':ret.data.video_status_msg || '', 
-                            'videoTitle':ret.data.video_title || ''
+                            'downloadUrl':ret.data.file_url || '', 
+                            'fileid':ret.data.file_fileid || '',
+                            'uploadTime':ret.data.file_upload_time || '',
+                            'size':ret.data.file_size || '',
+                            'md5':ret.data.file_md5 || '', 
+                            'width':ret.data.photo_width || '', 
+                            'height':ret.data.photo_height || ''
                         }
                     }
 
@@ -255,11 +232,11 @@ exports.delete = function(fileid, callback, userid) {
 function generateResUrl(userid, fileid, oper) {
     if (fileid) {
         if (oper) {
-            return conf.API_VIDEO_END_POINT + conf.APPID + '/' + userid + '/' + fileid + '/' + oper;
+            return conf.API_IMAGE_END_POINT + conf.APPID + '/' + userid + '/' + fileid + '/' + oper;
         } else {
-            return conf.API_VIDEO_END_POINT + conf.APPID + '/' + userid + '/' + fileid;
+            return conf.API_IMAGE_END_POINT + conf.APPID + '/' + userid + '/' + fileid;
         }
     } else {
-        return conf.API_VIDEO_END_POINT + conf.APPID + '/' + userid;
+        return conf.API_IMAGE_END_POINT + conf.APPID + '/' + userid;
     }
 }
