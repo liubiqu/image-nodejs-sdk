@@ -13,9 +13,16 @@ exports.SECRET_ID = '您的SECRET_ID';
 exports.SECRET_KEY = '您的SECRET_KEY';
 ```
 
+或者可以动态指定您的配置
+```javascript
+tencentyun.conf.setAppInfo('200674', 'AKID6iy7TYQpLA4AmoGtNVlfZij00wy6qEuI', 'LtkKOTyAV0g4i4UscFXDYEGUIlxZrtnL');
+```
+
 ## 图片和微视频上传、查询、删除程序示例
 ```javascript
 var tencentyun = require('tencentyun');
+
+tencentyun.conf.setAppInfo('200674', 'AKID6iy7TYQpLA4AmoGtNVlfZij00wy6qEuI', 'LtkKOTyAV0g4i4UscFXDYEGUIlxZrtnL');
 
 tencentyun.image.upload('./154633894.jpg', function(ret){
     var fileid = ret.data.fileid;
