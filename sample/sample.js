@@ -1,5 +1,7 @@
 var tencentyun = require('../');
 
+tencentyun.conf.setAppInfo('200674', 'AKID6iy7TYQpLA4AmoGtNVlfZij00wy6qEuI', 'LtkKOTyAV0g4i4UscFXDYEGUIlxZrtnL');
+
 tencentyun.image.upload('./154633894.jpg', function(ret){
     var fileid = ret.data.fileid;
 
