@@ -1,8 +1,8 @@
 var tencentyun = require('../');
 
-tencentyun.conf.setAppInfo('200674', 'AKID6iy7TYQpLA4AmoGtNVlfZij00wy6qEuI', 'LtkKOTyAV0g4i4UscFXDYEGUIlxZrtnL');
+tencentyun.conf.setAppInfo('200679', 'AKIDoleG4e6U0j6EVQcjWXxzSO2Vv7Hqlgp2', 'ROlw3XYdNXNnII18ATs6zd7m5mivnApa');
 
-tencentyun.image.upload('./154633894.jpg', function(ret){
+tencentyun.image.upload('/tmp/amazon.jpg', function(ret){
     var fileid = ret.data.fileid;
 
     tencentyun.image.stat(fileid, function(ret) {
@@ -10,6 +10,13 @@ tencentyun.image.upload('./154633894.jpg', function(ret){
     });
 
     var fileid = ret.data.fileid;
+
+    tencentyun.image.copy(fileid, function(ret) {
+        console.log(ret);
+        var sign = tencentyun.auth.appSign(ret.data.downloadUrl, 0);
+        console.log(ret.data.downloadUrl + '?sign=' + sign);
+    });
+
     tencentyun.image.delete(fileid, function(ret) {
         console.log(ret);
     });

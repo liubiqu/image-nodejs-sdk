@@ -23,9 +23,12 @@ exports.appSign = function(url, expired) {
         return AUTH_URL_FORMAT_ERROR;
     }
 
-    var cate = urlInfo.cate, ver = urlInfo.ver, appid = urlInfo.appid, userid = urlInfo.userid;
+    var cate = urlInfo.cate || '';
+    var ver = urlInfo.ver || '';
+    var appid = urlInfo.appid, userid = urlInfo.userid;
+    var style = urlInfo.style || '';
     var oper = urlInfo.oper || '';
-    fileid = urlInfo.fileid || null;
+    var fileid = urlInfo.fileid || null;
 
     // del and copy get once sign
     var onceOpers = ['del','copy'];
@@ -55,37 +58,58 @@ exports.appSign = function(url, expired) {
 
 function getInfoFromUrl(url) {
     var args = urlM.parse(url);
-    if (args.pathname) {
-        var parts = args.pathname.split('/');
-        switch (parts.length) {
-            case 5:
-                cate = parts[1];
-                ver = parts[2];
-                appid = parts[3];
-                userid = parts[4];
-                return {'cate':cate, 'ver':ver, 'appid':appid, 'userid':userid};
-            break;
-            case 6:
-                cate = parts[1];
-                ver = parts[2];
-                appid = parts[3];
-                userid = parts[4];
-                fileid = parts[5];
-                return {'cate':cate, 'ver':ver, 'appid':appid, 'userid':userid, 'fileid':fileid};
-            break;
-            case 7:
-                cate = parts[1];
-                ver = parts[2];
-                appid = parts[3];
-                userid = parts[4];
-                fileid = parts[5];
-                oper = parts[6];
-                return {'cate':cate, 'ver':ver, 'appid':appid, 'userid':userid, 'fileid':fileid, 'oper':oper};
-            break;
-            default:
-                return {};
+    var argsEndPointImg = urlM.parse(conf.API_IMAGE_END_POINT);
+    var argsEndPointVideo = urlM.parse(conf.API_VIDEO_END_POINT);
+    if (args.hostname == argsEndPointImg.hostname || args.hostname == argsEndPointVideo.hostname) {
+        if (args.pathname) {
+            var parts = args.pathname.split('/');
+            switch (parts.length) {
+                case 5:
+                    cate = parts[1];
+                    ver = parts[2];
+                    appid = parts[3];
+                    userid = parts[4];
+                    return {'cate':cate, 'ver':ver, 'appid':appid, 'userid':userid};
+                break;
+                case 6:
+                    cate = parts[1];
+                    ver = parts[2];
+                    appid = parts[3];
+                    userid = parts[4];
+                    fileid = parts[5];
+                    return {'cate':cate, 'ver':ver, 'appid':appid, 'userid':userid, 'fileid':fileid};
+                break;
+                case 7:
+                    cate = parts[1];
+                    ver = parts[2];
+                    appid = parts[3];
+                    userid = parts[4];
+                    fileid = parts[5];
+                    oper = parts[6];
+                    return {'cate':cate, 'ver':ver, 'appid':appid, 'userid':userid, 'fileid':fileid, 'oper':oper};
+                break;
+                default:
+                    return {};
+            }
+        } else {
+            return {};
         }
     } else {
-        return {};
+        if (args.pathname) {
+            var parts = args.pathname.split('/');
+            switch (parts.length) {
+                case 5:
+                    appid = parts[1];
+                    userid = parts[2];
+                    fileid = parts[3];
+                    style = parts[4];
+                    return {'appid':appid, 'userid':userid, 'fileid':fileid, 'style':style};
+                break;
+                default:
+                    return {};
+            }
+        } else {
+            return {};
+        }
     }
 }

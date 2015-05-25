@@ -166,6 +166,64 @@ exports.stat = function(fileid, callback, userid) {
     }
 }
 
+exports.copy = function(fileid, callback, userid) {
+
+    userid = userid || 0;
+    callback = callback || function(ret){console.log(ret)};
+
+    if (fileid && typeof callback === 'function') {
+        var url = generateResUrl(userid, fileid, 'copy');
+        var expired = parseInt(Date.now() / 1000) + EXPIRED_SECONDS;
+        var sign  = auth.appSign(url, expired);
+        var urlInfo = urlM.parse(url);
+        
+        var headers = {};
+        headers['Authorization'] = 'QCloud ' + sign;
+        headers['User-Agent'] = conf.USER_AGENT();
+
+        var options = {
+            hostname: urlInfo.hostname,
+            port: urlInfo.port || 80,
+            path: urlInfo.path,
+            method: 'POST',
+            headers: headers
+        };
+
+        var req = http.request(options, function (res) {
+            res.on('data', function (data) {
+                var ret = {};
+                try {
+                    var ret = JSON.parse(data.toString());
+                } catch (err) {
+                    ret = {};
+                }
+                if (ret) {
+                    var result = {
+                        'httpcode':res.statusCode,
+                        'code':ret.code, 
+                        'message':ret.message || '', 
+                        'data':{
+                            'downloadUrl':ret.data.download_url || '', 
+                            'url':ret.data.url || '',
+                        }
+                    }
+                    callback(result);
+                } else {
+                    callback({'httpcode':res.statusCode, 'code':-1, 'message':'response '+data.toString()+' is not json', 'data':{}});
+                }
+            });
+        });
+
+        req.write('');
+        req.end();
+
+    } else {
+        // error
+        callback({'httpcode':0, 'code':-1, 'message':'params error', 'data':{}});
+    }
+}
+
+
 /**
  * 删除视频
  * @param  {string}   fileid   视频文件在腾讯云存储的唯一ID，必须
