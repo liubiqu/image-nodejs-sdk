@@ -5,14 +5,17 @@ tencentyun.conf.setAppInfo('200679', 'AKIDoleG4e6U0j6EVQcjWXxzSO2Vv7Hqlgp2', 'RO
 tencentyun.image.upload('/tmp/amazon.jpg', function(ret){
     var fileid = ret.data.fileid;
 
+    // 查询
     tencentyun.image.stat(fileid, function(ret) {
         console.log(ret);
     });
 
     var fileid = ret.data.fileid;
 
+    // 复制
     tencentyun.image.copy(fileid, function(ret) {
         console.log(ret);
+        // 生成私密下载url
         var sign = tencentyun.auth.appSign(ret.data.downloadUrl, 0);
         console.log(ret.data.downloadUrl + '?sign=' + sign);
     });
@@ -28,8 +31,7 @@ tencentyun.image.upload('/tmp/amazon.jpg', function(ret){
 });
 
 
-tencentyun.video.upload('/tmp/085523020515bc3137630770.mp4');
-
+// 带自定义信息的上传
 tencentyun.video.upload('/tmp/085523020515bc3137630770.mp4', function(ret){
 
     var fileid = ret.data.fileid;
