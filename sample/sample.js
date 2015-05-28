@@ -21,7 +21,7 @@ tencentyun.image.upload('/tmp/amazon.jpg', function(ret){
     });
 
     // 生成新的上传签名
-    var expired = parseInt(Date.now() / 1000) + 999;
+    var expired = parseInt(Date.now() / 1000) + 60;
     var sign = tencentyun.auth.appSign('http://web.image.myqcloud.com/photos/v1/200679/0/', expired);
     console.log(sign);
 
