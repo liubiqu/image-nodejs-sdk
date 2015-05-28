@@ -45,7 +45,7 @@ exports.appSign = function(url, expired) {
         
     var plainText = 'a='+appid+'&k='+secretId+'&e='+expired+'&t='+now+'&r='+rdm+'&u='+puserid+'&f='+fileid;
     
-    var data = new Buffer(plainText,'utf-8');
+    var data = new Buffer(plainText,'utf8');
     
     var res = crypto.createHmac('sha1',secretKey).update(data).digest();
     
