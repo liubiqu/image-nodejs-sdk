@@ -10,6 +10,7 @@ tencentyun.conf.setAppInfo('200674', 'AKID6iy7TYQpLA4AmoGtNVlfZij00wy6qEuI', 'Lt
 ```
 
 ## V2版本空间和自定义文件名的上传，查询和删除示例
+```javascript
 var tencentyun = require('../');
 
 tencentyun.conf.setAppInfo('10000002', 'AKIDL5iZVplWMenB5Zrx47X78mnCM3F5xDbC', 'Lraz7n2vNcyW3tiP646xYdfr5KBV4YAv');
@@ -49,6 +50,7 @@ tencentyun.imagev2.upload('/tmp/amazon.jpg', bucket, fileid, function(ret){
         });
     }
 });
+```
 
 
 ## 图片和微视频上传、查询、删除程序示例
