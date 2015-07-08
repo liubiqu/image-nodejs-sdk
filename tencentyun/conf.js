@@ -15,6 +15,7 @@ var ua = function() {
 exports.USER_AGENT = ua;
 exports.API_VIDEO_END_POINT = 'http://web.image.myqcloud.com/videos/v1/';
 exports.API_IMAGE_END_POINT = 'http://web.image.myqcloud.com/photos/v1/';
+exports.API_IMAGE_END_POINT_V2 = 'http://web.image.myqcloud.com/photos/v2/';
 
 exports.setAppInfo = function(appid, secretId, secretKey) {
     module.exports.APPID = appid;
