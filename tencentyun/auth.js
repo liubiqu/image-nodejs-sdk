@@ -28,7 +28,7 @@ exports.appSignV2 = function(url, expired) {
     var appid = urlInfo.appid, userid = urlInfo.userid, bucket = urlInfo.bucket;
     var style = urlInfo.style || '';
     var oper = urlInfo.oper || '';
-    var fileid = urlInfo.fileid || null;
+    var fileid = urlInfo.fileid || '';
 
     // del and copy get once sign
     var onceOpers = ['del','copy'];
@@ -85,7 +85,7 @@ exports.appSign = function(url, expired) {
     var appid = urlInfo.appid, userid = urlInfo.userid;
     var style = urlInfo.style || '';
     var oper = urlInfo.oper || '';
-    var fileid = urlInfo.fileid || null;
+    var fileid = urlInfo.fileid || '';
 
     // del and copy get once sign
     var onceOpers = ['del','copy'];
