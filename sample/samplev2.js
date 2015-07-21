@@ -24,16 +24,19 @@ tencentyun.imagev2.upload('/tmp/amazon.jpg', bucket, fileid, function(ret){
             console.log(ret);
             // 生成私密下载url
             var sign = tencentyun.auth.appSignV2(ret.data.downloadUrl, 0);
-            console.log(ret.data.downloadUrl + '?sign=' + sign);
+            console.log('downloadUrl is : ' + ret.data.downloadUrl + '?sign=' + sign);
         });
 
         // 生成新的上传签名
         var expired = parseInt(Date.now() / 1000) + 60;
-        var sign = tencentyun.auth.appSignV2('http://web.image.myqcloud.com/photos/v1/200679/0/', expired);
-        console.log(sign);
-
+        // http://test1-10000002.image.myqcloud.com/test1-10000002/0/sample1436341553/
+        // http://[bucket]-[appid].image.myqcloud.com/[bucket]-[appid]/[userid]/[fileid]/
+        var sign = tencentyun.auth.appSignV2('http://test1-10000002.image.myqcloud.com/test1-10000002/0/sample1436341553/', expired);
+        console.log('sign is :'+sign);
+        /*
         tencentyun.imagev2.delete(bucket, fileid, function(ret) {
             console.log(ret);
         });
+        */
     }
 });
