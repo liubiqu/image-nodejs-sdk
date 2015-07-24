@@ -1,6 +1,6 @@
 {
   "name": "tencentyun",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "node sdk for qcloud ",
   "main": "index.js",
   "scripts": {
