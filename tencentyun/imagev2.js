@@ -292,6 +292,10 @@ exports.delete = function(bucket, fileid, callback, userid) {
     }
 }
 
+exports.generateResUrlV2 = function (bucket, userid, fileid, oper) {
+    return generateResUrlV2(bucket, userid, fileid, oper);
+}
+
 
 function generateResUrlV2(bucket, userid, fileid, oper) {
     if (fileid) {
