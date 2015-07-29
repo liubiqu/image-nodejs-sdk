@@ -11,11 +11,11 @@ var EXPIRED_SECONDS = 2592000;
 
 /**
  * 上传本地图片文件
- * @param  {string}   fileObj     图片本地路径或保存有二进制图片数据的Buffer，必须
- * @param  {Function} callback     用户上传完毕后执行的回调函数，可选，默认输出日志
- *                                 入参为ret：{'httpcode':200,'code':0,'message':'ok','data':{...}}
- * @param  {string}   userid       用户自定义的业务ID，可选，默认为0
- * @param  {string}   magicContext 业务附加信息,用于透传回调用者的业务后台，可以为NULL
+ * @param  {string / Buffer}   fileObj      图片本地路径或保存有二进制图片数据的Buffer，必须
+ * @param  {Function}          callback     用户上传完毕后执行的回调函数，可选，默认输出日志
+ *                                          入参为ret：{'httpcode':200,'code':0,'message':'ok','data':{...}}
+ * @param  {string}            userid       用户自定义的业务ID，可选，默认为0
+ * @param  {string}            magicContext 业务附加信息,用于透传回调用者的业务后台，可以为NULL
  * @return NULL
  */
 exports.upload = function(fileObj, callback, userid, magicContext) {
