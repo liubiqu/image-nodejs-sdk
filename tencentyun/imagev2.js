@@ -33,7 +33,7 @@ exports.upload = function(filePath, bucket, fileid, callback, userid, magicConte
     if (isExists && typeof callback === 'function') {
         var url = generateResUrlV2(bucket, userid, fileid);
         var expired = parseInt(Date.now() / 1000) + EXPIRED_SECONDS;
-        var sign  = auth.appSignV2(url, expired);
+        var sign  = auth.getAppSignV2(bucket, fileid, expired);
         var urlInfo = urlM.parse(url);
         var form = formstream();
                 
@@ -113,7 +113,7 @@ exports.stat = function(bucket, fileid, callback, userid) {
     if (fileid && typeof callback === 'function') {
         var url = generateResUrlV2(bucket, userid, fileid);
         var expired = parseInt(Date.now() / 1000) + EXPIRED_SECONDS;
-        var sign  = auth.appSignV2(url, expired);
+        var sign  = auth.getAppSignV2(bucket, fileid, expired);
         var urlInfo = urlM.parse(url);
         
         var headers = {};
@@ -179,8 +179,8 @@ exports.copy = function(bucket, fileid, callback, userid) {
 
     if (fileid && typeof callback === 'function') {
         var url = generateResUrlV2(bucket, userid, fileid, 'copy');
-        var expired = parseInt(Date.now() / 1000) + EXPIRED_SECONDS;
-        var sign  = auth.appSignV2(url, expired);
+        var expired = 0;
+        var sign  = auth.getAppSignV2(bucket, fileid, expired);
         var urlInfo = urlM.parse(url);
         
         var headers = {};
@@ -245,8 +245,8 @@ exports.delete = function(bucket, fileid, callback, userid) {
 
     if (fileid && typeof callback === 'function') {
         var url = generateResUrlV2(bucket, userid, fileid, 'del');
-        var expired = parseInt(Date.now() / 1000) + EXPIRED_SECONDS;
-        var sign  = auth.appSignV2(url, expired);
+        var expired = 0;
+        var sign  = auth.getAppSignV2(bucket, fileid, expired);
         var urlInfo = urlM.parse(url);
         
         var headers = {};
@@ -299,6 +299,7 @@ exports.generateResUrlV2 = function (bucket, userid, fileid, oper) {
 
 function generateResUrlV2(bucket, userid, fileid, oper) {
     if (fileid) {
+        fileid = encodeURIComponent(fileid);
         if (oper) {
             return conf.API_IMAGE_END_POINT_V2 + conf.APPID + '/' + bucket + '/' + userid + '/' + fileid + '/' + oper;
         } else {

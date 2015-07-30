@@ -5,6 +5,41 @@ var conf = require('./conf');
 exports.AUTH_URL_FORMAT_ERROR = -1;
 exports.AUTH_SECRET_ID_KEY_ERROR = -2;
 
+exports.getAppSignV2 = function(bucket, fileid, expired, userid) {
+    var now            = parseInt(Date.now() / 1000);
+    var rdm            = parseInt(Math.random() * Math.pow(2, 32));
+    var puserid        = '';
+    userid = userid || '0';
+
+    var appid = conf.APPID, secretId = conf.SECRET_ID, secretKey = conf.SECRET_KEY;
+
+    if (!appid.length || !secretId.length || !secretKey.length){
+        return AUTH_SECRET_ID_KEY_ERROR;
+    }
+
+    if(typeof userid === 'string'){
+        if(userid.length > 64){
+            return AUTH_URL_FORMAT_ERROR;
+        }
+        if ('0' !== userid) {
+            puserid = userid;
+        }
+    }
+        
+    var plainText = 'a='+appid+'&b='+bucket+'&k='+secretId+'&e='+expired+'&t='+now+'&r='+rdm+'&u='+puserid+'&f='+fileid;
+    
+    var data = new Buffer(plainText,'utf8');
+    
+    var res = crypto.createHmac('sha1',secretKey).update(data).digest();
+    
+    var bin = Buffer.concat([res,data]);
+    
+    var sign = bin.toString('base64');
+
+    return sign;
+}
+
+
 exports.appSignV2 = function(url, expired) {
 
     var now            = parseInt(Date.now() / 1000);
