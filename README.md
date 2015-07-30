@@ -18,7 +18,7 @@ var tencentyun = require('../');
 tencentyun.conf.setAppInfo('10000002', 'AKIDL5iZVplWMenB5Zrx47X78mnCM3F5xDbC', 'Lraz7n2vNcyW3tiP646xYdfr5KBV4YAv');
 
 // 自定义空间名称，在http://console.qcloud.com/image/bucket创建
-var bucket = 'test1';
+var bucket = 'test2';
 // 自定义文件名
 var fileid = 'sample' + parseInt(Date.now() / 1000);
 
@@ -36,12 +36,14 @@ tencentyun.imagev2.upload('/tmp/amazon.jpg', bucket, fileid, function(ret){
 
         var fileid = ret.data.fileid;
 
+        // 生成私密下载url
+        var expired = parseInt(Date.now() / 1000) + 60;
+        var sign = tencentyun.auth.getAppSignV2(bucket, fileid, expired);
+        console.log('downloadUrl is : ' + ret.data.downloadUrl + '?sign=' + sign);
+
         // 复制
         tencentyun.imagev2.copy(bucket, fileid, function(ret) {
             console.log(ret);
-            // 生成私密下载url
-            var sign = tencentyun.auth.getAppSignV2(bucket, fileid, 0);
-            console.log('downloadUrl is : ' + ret.data.downloadUrl + '?sign=' + sign);
         });
 
         // 生成新的上传签名
