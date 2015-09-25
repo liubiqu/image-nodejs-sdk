@@ -94,7 +94,8 @@ exports.upload = function(fileObj, bucket, fileid, callback, userid, magicContex
                         result.data = {
                             'downloadUrl':ret.data.download_url || '',
                             'fileid':ret.data.fileid || '',
-                            'url':ret.data.url || ''
+                            'url':ret.data.url || '',
+                            'info':ret.data.info || ''
                         }
                     }
 
