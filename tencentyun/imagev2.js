@@ -27,6 +27,7 @@ exports.upload = function(fileObj, bucket, fileid, callback, userid, magicContex
     if (fileObj instanceof Buffer) {
         isBuffer = true
     } else if (typeof fileObj == 'string' || fileObj instanceof String) {
+		var filePath=fileObj;
         isExists = fs.existsSync(fileObj)
     }
 
