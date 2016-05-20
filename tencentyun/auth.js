@@ -39,6 +39,34 @@ exports.getAppSignV2 = function(bucket, fileid, expired, userid) {
     return sign;
 }
 
+exports.getPornDetectSign = function(url) {
+    var puserid = '';
+    var appid = conf.APPID, secretId = conf.SECRET_ID, secretKey = conf.SECRET_KEY, bucket = conf.BUCKET;
+
+    if (!appid.length || !secretId.length || !secretKey.length || !bucket.length){
+        return AUTH_SECRET_ID_KEY_ERROR;
+    }
+    
+    var expired = parseInt(Date.now() / 1000) + 10;
+    var current = parseInt(Date.now() / 1000);
+    var plainText = 'a='+appid+'&b='+bucket+'&k='+secretId+'&t='+current+'&e='+expired+'&l='+ urlencode(url);
+    
+    var data = new Buffer(plainText,'utf8');
+    
+    var res = crypto.createHmac('sha1',secretKey).update(data).digest();
+    
+    var bin = Buffer.concat([res,data]);
+    
+    var sign = bin.toString('base64');
+
+    return sign;
+}
+
+function urlencode (str) {  
+    str = (str + '').toString();   
+    return encodeURIComponent(str).replace(/!/g, '%21').replace(/'/g, '%27').replace(/\(/g, '%28').  
+    replace(/\)/g, '%29').replace(/\*/g, '%2A').replace(/%20/g, '+');  
+} 
 
 exports.appSignV2 = function(url, expired) {
 

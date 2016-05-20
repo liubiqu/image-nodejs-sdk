@@ -1,11 +1,18 @@
 var tencentyun = require('../');
 
-// 10000002 即项目ID 在http://console.qcloud.com/image/bucket查看
-// 后两项为secretid和secretkey 在http://console.qcloud.com/image/project查看
-tencentyun.conf.setAppInfo('10000002', 'AKIDL5iZVplWMenB5Zrx47X78mnCM3F5xDbC', 'Lraz7n2vNcyW3tiP646xYdfr5KBV4YAv');
-
 // 自定义空间名称，在http://console.qcloud.com/image/bucket创建
 var bucket = 'test2';
+
+// 10000002 即项目ID 在http://console.qcloud.com/image/bucket查看
+// 后两项为secretid和secretkey 在http://console.qcloud.com/image/project查看
+tencentyun.conf.setAppInfo('10000002', 'AKIDL5iZVplWMenB5Zrx47X78mnCM3F5xDbC', 'Lraz7n2vNcyW3tiP646xYdfr5KBV4YAv', bucket);
+
+//智能鉴黄
+var pornUrl = 'http://t11.baidu.com/it/u=1916212543,2643630329&fm=76';
+tencentyun.imageprocess.pornDetect(pornUrl, function(ret){
+    console.log(ret);
+});
+
 // 自定义文件名
 var fileid = 'sample' + parseInt(Date.now() / 1000);
 
