@@ -1,6 +1,6 @@
 var tencentyun = require('../');
 
-tencentyun.conf.setAppInfo('200679', 'AKIDoleG4e6U0j6EVQcjWXxzSO2Vv7Hqlgp2', 'ROlw3XYdNXNnII18ATs6zd7m5mivnApa');
+tencentyun.conf.setAppInfo('111', 'secretid', 'secretkey');
 
 tencentyun.image.upload('/tmp/amazon.jpg', function(ret){
     var fileid = ret.data.fileid;

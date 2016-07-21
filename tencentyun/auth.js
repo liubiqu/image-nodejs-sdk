@@ -47,9 +47,10 @@ exports.getPornDetectSign = function(url) {
         return AUTH_SECRET_ID_KEY_ERROR;
     }
     
-    var expired = parseInt(Date.now() / 1000) + 10;
+    var expired = parseInt(Date.now() / 1000) + 1000;
     var current = parseInt(Date.now() / 1000);
-    var plainText = 'a='+appid+'&b='+bucket+'&k='+secretId+'&t='+current+'&e='+expired+'&l='+ urlencode(url);
+    //var plainText = 'a='+appid+'&b='+bucket+'&k='+secretId+'&t='+current+'&e='+expired+'&l='+ urlencode(url);
+    var plainText = 'a='+appid+'&b='+bucket+'&k='+secretId+'&t='+current+'&e='+expired;
     
     var data = new Buffer(plainText,'utf8');
     
