@@ -22,11 +22,11 @@ exports.newPerson = function (group_ids, person_id, image_url, person_name, tag,
     var content = {
         'bucket': conf.BUCKET,
         'appid': conf.APPID,
-        'group_ids': group_ids,
-        'person_id': person_id,
-        'person_name': person_name,
+        'group_ids': encodeURIComponent(group_ids),
+        'person_id': encodeURIComponent(person_id),
+        'person_name': encodeURIComponent(person_name),
         'url': image_url,
-        'tag': tag
+        'tag': encodeURIComponent(tag)
     };
 
     return requestCI(conf.API_NEW_PERSON_URL, content, callback);
@@ -237,7 +237,7 @@ function requestCI(api_url, req_body, callback) {
     var reqdata = JSON.stringify(req_body);
     var headers = {
         'Authorization': sign,
-        'Content-Type': 'application/json,utf-8',
+        'Content-Type': 'application/json; charset=UTF-8',
         'Content-Length': reqdata.length
     };
     var urlInfo = urlM.parse(api_url);

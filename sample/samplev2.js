@@ -13,8 +13,8 @@ tencentyun.imageprocess.pornDetect(pornUrl, function(ret){
 });
 //
 // var face1 = 'http://face-1253351908.costj.myqcloud.com/07147bb99b25b908444221e236ba956d.jpg';
-// //个体信息创建
-// tencentyun.face.newPerson(['8021M'], '1890502xxxx', face1, 'liubiqu', 'student', function (data) {
+// // 个体信息创建
+// tencentyun.face.newPerson(['8021M'], '1890502xxxx', face1, '刘必渠', 'student', function (data) {
 //     console.log('newPerson', data);
 // });
 //
@@ -22,17 +22,17 @@ tencentyun.imageprocess.pornDetect(pornUrl, function(ret){
 //     console.log('getPersonIds', data);
 // });
 //
-// // tencentyun.face.delPerson( '18905029911', function (data) {
-// //     console.log('个体信息创建.delPerson', data);
-// // });
+// tencentyun.face.delPerson( '18905029911', function (data) {
+//     console.log('个体信息创建.delPerson', data);
+// });
 //
 // //个体信息信息获取
-// tencentyun.face.getInfo('18905029911', function (data) {
+// tencentyun.face.getInfo('1890502xxxx', function (data) {
 //     console.log('getInfo', data);
 // });
 //
 // //人脸验证
-// tencentyun.face.verify('18905029911', face1,  function (data) {
+// tencentyun.face.verify('1890502xxxx', face1,  function (data) {
 //     console.log('verify', data, data.candidates);
 // });
 //
