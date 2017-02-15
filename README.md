@@ -1,23 +1,28 @@
 # tencentyun/image-nodejs-sdk
-腾讯云 [万象优图（Cloud Image）](https://www.qcloud.com/product/ci.html) SDK for Node.js
+腾讯云 [万象优图（Cloud Image）](https://www.qcloud.com/product/ci) SDK for Node.js
 
 ## 安装
-npm install tencentyun
+npm install tencentyun-ci --save
 
 ## 动态指定您的配置
 ```javascript
 tencentyun.conf.setAppInfo('111', 'secretid', 'secretkey');
 ```
 
+## 运行测试程序
+修改`sample/samplev2.js`文件中的配置参数，否则提示错误信息`智能鉴黄imageprocess.pornDetect { code: 11, message: 'secretid not exist', data: {} }`
+```javascript
+npm install && npm start
+```
+
 ## V2版本空间和自定义文件名的上传，查询和删除示例
 ```javascript
 var tencentyun = require('../');
 
-// 自定义空间名称，在http://console.qcloud.com/image/bucket创建
+// 自定义空间名称，在http://console.qcloud.com/ci/bucket创建
 var bucket = 'bucket';
 
-// 111 即项目ID 在http://console.qcloud.com/image/bucket查看
-// 后两项为secretid和secretkey 在http://console.qcloud.com/image/project查看
+// 前三个参数在https://console.qcloud.com/ci/secret查看，bucket在https://console.qcloud.com/ci/bucket 查看
 tencentyun.conf.setAppInfo('111', 'secretid', 'secretkey', bucket);
 
 //智能鉴黄
@@ -138,7 +143,4 @@ tencentyun.video.upload('/tmp/085523020515bc3137630770.mp4', function(ret){
 }, 'myvideos', {'title':'测试', 'desc':'这是一个测试'}, 'testimage');
 
 ```
-
-## 致谢
-
-20150528 感谢QQ网友王瑜剑提出的建议，我们改进了配置管理方式，增加了对于时钟校准的说明。
+ 
