@@ -1,24 +1,29 @@
 {
-  "name": "tencentyun",
-  "version": "2.0.2",
-  "description": "node sdk for qcloud ",
+  "name": "tencentyun-ci",
+  "version": "2.0.5",
+  "description": "node sdk for qcloud 万象优图2.0  ",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node ./sample/samplev2.js",
+    "dev": "node ./sample/samplev2.js"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/tencentyun/nodejs-sdk.git"
+    "url": "git+https://github.com/liubiqu/image-nodejs-sdk.git"
   },
   "keywords": [
     "qcloud"
   ],
-  "author": "tencentyun",
+  "author": [
+    "tencentyun",
+    "liubiqu"
+  ],
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/tencentyun/nodejs-sdk/issues"
+    "url": "https://github.com/liubiqu/image-nodejs-sdk/issues"
   },
-  "homepage": "https://github.com/tencentyun/nodejs-sdk#readme",
+  "homepage": "https://github.com/liubiqu/image-nodejs-sdk#readme",
   "engines": [
     "node >= 0.4.7"
   ],

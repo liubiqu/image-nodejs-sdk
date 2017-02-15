@@ -12,13 +12,13 @@ var TIME_OUT = 1000;
  * 智能鉴黄
  * @param  string  $pronDetectUrl     要进行黄图检测的图片url
  */
-exports.pornDetect = function(pronDetectUrl, callback) {
-    var sign  = auth.getPornDetectSign();
-    if( -1 == sign || -2 == sign){
+exports.pornDetect = function (pronDetectUrl, callback) {
+    var sign = auth.getPornDetectSign();
+    if (-1 == sign || -2 == sign) {
         var data = {
-                'code':9, 
-                'message':'Secret id or key is empty.', 
-                'data':{}
+            'code': 9,
+            'message': 'Secret id or key is empty.',
+            'data': {}
         }
         callback(data);
     }
@@ -27,11 +27,11 @@ exports.pornDetect = function(pronDetectUrl, callback) {
         'bucket': conf.BUCKET,
         'appid': parseInt(conf.APPID),
         'url': pronDetectUrl
-    }     
-    var reqdata = JSON.stringify(content);  
+    }
+    var reqdata = JSON.stringify(content);
 
     var headers = {
-        'Authorization': sign, 
+        'Authorization': sign,
         'Content-Type': 'application/json'
     }
     var url = conf.API_PRONDETECT_URL;
@@ -56,26 +56,26 @@ exports.pornDetect = function(pronDetectUrl, callback) {
             }
             if (ret) {
                 var result = {
-                    'code':ret.code, 
-                    'message':ret.message || '', 
-                    'data':{}
+                    'code': ret.code,
+                    'message': ret.message || '',
+                    'data': {}
                 }
 
                 if (0 == ret.code) {
                     result.data = {
-                        'result':ret.data.result || '0',
-                        'confidence':ret.data.confidence || '0',
-                        'normal score':ret.data.normal_score || '0',
-                        'hot score':ret.data.hot_score || '0',
-                        'porn score':ret.data.porn_score || '0',
-                        'forbid status':ret.data.forbid_status || '0'
+                        'result': ret.data.result || '0',
+                        'confidence': ret.data.confidence || '0',
+                        'normal score': ret.data.normal_score || '0',
+                        'hot score': ret.data.hot_score || '0',
+                        'porn score': ret.data.porn_score || '0',
+                        'forbid status': ret.data.forbid_status || '0'
                     }
                 }
 
                 callback(result);
 
             } else {
-                callback({'code':-1, 'message':'response '+data.toString()+' is not json', 'data':{}});
+                callback({'code': -1, 'message': 'response ' + data.toString() + ' is not json', 'data': {}});
             }
         });
     });
@@ -88,13 +88,13 @@ exports.pornDetect = function(pronDetectUrl, callback) {
  * 智能鉴黄-Url
  * @param  string  $pornUrl     要进行黄图检测的图片url列表
  */
-exports.pornDetectUrl = function(pornUrl, callback) {
-    var sign  = auth.getPornDetectSign();
-    if( -1 == sign || -2 == sign){
+exports.pornDetectUrl = function (pornUrl, callback) {
+    var sign = auth.getPornDetectSign();
+    if (-1 == sign || -2 == sign) {
         var data = {
-                'code':9, 
-                'message':'Secret id or key is empty.', 
-                'data':{}
+            'code': 9,
+            'message': 'Secret id or key is empty.',
+            'data': {}
         }
         callback(data);
     }
@@ -103,11 +103,11 @@ exports.pornDetectUrl = function(pornUrl, callback) {
         'bucket': conf.BUCKET,
         'appid': parseInt(conf.APPID),
         'url_list': pornUrl
-    }     
-    var reqdata = JSON.stringify(content);  
+    }
+    var reqdata = JSON.stringify(content);
 
     var headers = {
-        'Authorization': sign, 
+        'Authorization': sign,
         'Content-Type': 'application/json',
         'Content-Length': reqdata.length,
     }
@@ -133,40 +133,40 @@ exports.pornDetectUrl = function(pornUrl, callback) {
             }
             if (ret) {
                 var rets = ret.result_list;
-                if(rets){
+                if (rets) {
                     var result = {};
-                    for(var i = 0; i < rets.length; i++){
+                    for (var i = 0; i < rets.length; i++) {
                         var res = {
-                            'code':rets[i].code, 
-                            'message':rets[i].message || '', 
-                            'url':rets[i].url || '', 
-                            'data':{},
+                            'code': rets[i].code,
+                            'message': rets[i].message || '',
+                            'url': rets[i].url || '',
+                            'data': {},
                         }
 
                         if (0 == rets[i].code) {
                             res.data = {
-                                'result':rets[i].data.result || '0',
-                                'confidence':rets[i].data.confidence || '0',
-                                'normal score':rets[i].data.normal_score || '0',
-                                'hot score':rets[i].data.hot_score || '0',
-                                'porn score':rets[i].data.porn_score || '0',
-                                'forbid status':rets[i].data.forbid_status || '0',
+                                'result': rets[i].data.result || '0',
+                                'confidence': rets[i].data.confidence || '0',
+                                'normal score': rets[i].data.normal_score || '0',
+                                'hot score': rets[i].data.hot_score || '0',
+                                'porn score': rets[i].data.porn_score || '0',
+                                'forbid status': rets[i].data.forbid_status || '0',
                             }
                         }
                         result[i] = res;
                     }
                     callback(result);
                 }
-                else{
+                else {
                     var res = {
-                        'code':ret.code, 
-                        'message':ret.message || '', 
-                        'data':{},
+                        'code': ret.code,
+                        'message': ret.message || '',
+                        'data': {},
                     }
                     callback(res);
                 }
             } else {
-                callback({'code':-1, 'message':'response '+data.toString()+' is not json', 'data':{}});
+                callback({'code': -1, 'message': 'response ' + data.toString() + ' is not json', 'data': {}});
             }
         });
     });
@@ -178,13 +178,13 @@ exports.pornDetectUrl = function(pornUrl, callback) {
  * 智能鉴黄-File
  * @param  string  $pornFile     要进行黄图检测的图片file列表
  */
-exports.pornDetectFile = function(pornFile, callback) {
-    var sign  = auth.getPornDetectSign();
-    if( -1 == sign || -2 == sign){
+exports.pornDetectFile = function (pornFile, callback) {
+    var sign = auth.getPornDetectSign();
+    if (-1 == sign || -2 == sign) {
         var data = {
-                'code':9, 
-                'message':'Secret id or key is empty.', 
-                'data':{}
+            'code': 9,
+            'message': 'Secret id or key is empty.',
+            'data': {}
         }
         callback(data);
     }
@@ -196,10 +196,10 @@ exports.pornDetectFile = function(pornFile, callback) {
         if (isExists) {
             var stats = fs.statSync(filePath);
             var fileSizeInBytes = stats["size"];
-            form.file('image['+i.toString()+']', filePath, filePath, fileSizeInBytes);
+            form.file('image[' + i.toString() + ']', filePath, filePath, fileSizeInBytes);
         }
-        else{
-            callback({'httpcode':0, 'code':-1, 'message':'file '+filePath+' not exists', 'data':{}});
+        else {
+            callback({'httpcode': 0, 'code': -1, 'message': 'file ' + filePath + ' not exists', 'data': {}});
         }
     }
 
@@ -221,10 +221,10 @@ exports.pornDetectFile = function(pornFile, callback) {
     };
 
     var req = http.request(options, function (res) {
-        
+
         res.on('data', function (data) {
             var ret = {};
-            
+
             try {
                 var ret = JSON.parse(data.toString());
             } catch (err) {
@@ -232,40 +232,40 @@ exports.pornDetectFile = function(pornFile, callback) {
             }
             if (ret) {
                 var rets = ret.result_list;
-                if(rets){
+                if (rets) {
                     var result = {};
-                    for(var i = 0; i < rets.length; i++){
+                    for (var i = 0; i < rets.length; i++) {
                         var res = {
-                            'code':rets[i].code, 
-                            'message':rets[i].message || '', 
-                            'filename':rets[i].filename || '', 
-                            'data':{},
+                            'code': rets[i].code,
+                            'message': rets[i].message || '',
+                            'filename': rets[i].filename || '',
+                            'data': {},
                         }
 
                         if (0 == rets[i].code) {
                             res.data = {
-                                'result':rets[i].data.result || '0',
-                                'confidence':rets[i].data.confidence || '0',
-                                'normal score':rets[i].data.normal_score || '0',
-                                'hot score':rets[i].data.hot_score || '0',
-                                'porn score':rets[i].data.porn_score || '0',
-                                'forbid status':rets[i].data.forbid_status || '0',
+                                'result': rets[i].data.result || '0',
+                                'confidence': rets[i].data.confidence || '0',
+                                'normal score': rets[i].data.normal_score || '0',
+                                'hot score': rets[i].data.hot_score || '0',
+                                'porn score': rets[i].data.porn_score || '0',
+                                'forbid status': rets[i].data.forbid_status || '0',
                             }
                         }
                         result[i] = res;
                     }
                     callback(result);
                 }
-                else{
+                else {
                     var res = {
-                        'code':ret.code, 
-                        'message':ret.message || '', 
-                        'data':{},
+                        'code': ret.code,
+                        'message': ret.message || '',
+                        'data': {},
                     }
                     callback(res);
                 }
             } else {
-                callback({'code':-1, 'message':'response '+data.toString()+' is not json', 'data':{}});
+                callback({'code': -1, 'message': 'response ' + data.toString() + ' is not json', 'data': {}});
             }
         });
     });

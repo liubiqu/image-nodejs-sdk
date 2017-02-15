@@ -18,35 +18,35 @@ var EXPIRED_SECONDS = 2592000;
  * @param  {string}            magicContext 业务附加信息,用于透传回调用者的业务后台，可以为NULL
  * @return NULL
  */
-exports.upload = function(fileObj, bucket, fileid, callback, userid, magicContext) {
-
-
-    var isBuffer = false
-    var isExists = false
+exports.upload = function (fileObj, bucket, fileid, callback, userid, magicContext) {
+    var isBuffer = false;
+    var isExists = false;
 
     if (fileObj instanceof Buffer) {
         isBuffer = true
     } else if (typeof fileObj == 'string' || fileObj instanceof String) {
-		var filePath=fileObj;
+        var filePath = fileObj;
         isExists = fs.existsSync(fileObj)
     }
 
     userid = userid || 0;
     fileid = fileid || '';
-    callback = callback || function(ret){console.log(ret)};
+    callback = callback || function (ret) {
+            console.log(ret)
+        };
 
     if (!bucket) {
         // error, bucket not defined
-        callback({'httpcode':0, 'code':-1, 'message':'bucket must be input as params', 'data':{}});
+        callback({'httpcode': 0, 'code': -1, 'message': 'bucket must be input as params', 'data': {}});
     }
 
     if ((isBuffer || isExists) && typeof callback === 'function') {
         var url = generateResUrlV2(bucket, userid, fileid);
         var expired = parseInt(Date.now() / 1000) + EXPIRED_SECONDS;
-        var sign  = auth.getAppSignV2(bucket, fileid, expired);
+        var sign = auth.getAppSignV2(bucket, fileid, expired);
         var urlInfo = urlM.parse(url);
         var form = formstream();
-                
+
         if (magicContext) {
             form.field('magiccontext', magicContext);
         }
@@ -57,7 +57,7 @@ exports.upload = function(fileObj, bucket, fileid, callback, userid, magicContex
             var fileSizeInBytes = stats["size"];
 
             form.file('filecontent', fileObj, '', fileSizeInBytes);
-        // else if file object if a file buffer
+            // else if file object if a file buffer
         } else {
             form.buffer('filecontent', fileObj, 'untitled')
         }
@@ -79,31 +79,31 @@ exports.upload = function(fileObj, bucket, fileid, callback, userid, magicContex
             res.on('data', function (data) {
                 var ret = {};
                 try {
-                    var ret = JSON.parse(data.toString());
+                    ret = JSON.parse(data.toString());
                 } catch (err) {
                     ret = {};
                 }
                 if (ret) {
                     var result = {
-                        'httpcode':res.statusCode,
-                        'code':ret.code, 
-                        'message':ret.message || '', 
-                        'data':{}
+                        'httpcode': res.statusCode,
+                        'code': ret.code,
+                        'message': ret.message || '',
+                        'data': {}
                     }
 
                     if (0 == ret.code) {
                         result.data = {
-                            'downloadUrl':ret.data.download_url || '',
-                            'fileid':ret.data.fileid || '',
-                            'url':ret.data.url || '',
-                            'info':ret.data.info || ''
+                            'downloadUrl': ret.data.download_url || '',
+                            'fileid': ret.data.fileid || '',
+                            'url': ret.data.url || '',
+                            'info': ret.data.info || ''
                         }
                     }
 
                     callback(result);
 
                 } else {
-                    callback({'httpcode':res.statusCode, 'code':-1, 'message':'response '+data.toString()+' is not json', 'data':{}});
+                    callback({'httpcode': res.statusCode, 'code': -1, 'message': 'response ' + data.toString() + ' is not json', 'data': {}});
                 }
             });
         });
@@ -112,7 +112,7 @@ exports.upload = function(fileObj, bucket, fileid, callback, userid, magicContex
 
     } else {
         // error, file not exists
-        callback({'httpcode':0, 'code':-1, 'message':'file '+filePath+' not exists or params error', 'data':{}});
+        callback({'httpcode': 0, 'code': -1, 'message': 'file ' + filePath + ' not exists or params error', 'data': {}});
     }
 }
 
@@ -122,18 +122,20 @@ exports.upload = function(fileObj, bucket, fileid, callback, userid, magicContex
  * @param  {Function} callback 用户查询完毕后执行的回调函数，可选，默认输出日志
  *                             入参为ret：{'httpcode':200,'code':0,'message':'ok','data':{...}}
  * @param  {string}   userid   用户自定义业务ID，可选，默认为0
- * @return {NULL} 
+ * @return {}
  */
-exports.stat = function(bucket, fileid, callback, userid) {
+exports.stat = function (bucket, fileid, callback, userid) {
     userid = userid || 0;
-    callback = callback || function(ret){console.log(ret)};
+    callback = callback || function (ret) {
+            console.log(ret)
+        };
 
     if (fileid && typeof callback === 'function') {
         var url = generateResUrlV2(bucket, userid, fileid);
         var expired = parseInt(Date.now() / 1000) + EXPIRED_SECONDS;
-        var sign  = auth.getAppSignV2(bucket, fileid, expired);
+        var sign = auth.getAppSignV2(bucket, fileid, expired);
         var urlInfo = urlM.parse(url);
-        
+
         var headers = {};
         headers['Authorization'] = 'QCloud ' + sign;
         headers['User-Agent'] = conf.USER_AGENT();
@@ -150,33 +152,33 @@ exports.stat = function(bucket, fileid, callback, userid) {
             res.on('data', function (data) {
                 var ret = {};
                 try {
-                    var ret = JSON.parse(data.toString());
+                    ret = JSON.parse(data.toString());
                 } catch (err) {
                     ret = {};
                 }
                 if (ret) {
                     var result = {
-                        'httpcode':res.statusCode,
-                        'code':ret.code, 
-                        'message':ret.message || '', 
-                        'data':{}
-                    }
+                        'httpcode': res.statusCode,
+                        'code': ret.code,
+                        'message': ret.message || '',
+                        'data': {}
+                    };
 
                     if (0 == ret.code) {
                         result.data = {
-                            'downloadUrl':ret.data.file_url || '', 
-                            'fileid':ret.data.file_fileid || '',
-                            'uploadTime':ret.data.file_upload_time || '',
-                            'size':ret.data.file_size || '',
-                            'md5':ret.data.file_md5 || '', 
-                            'width':ret.data.photo_width || '', 
-                            'height':ret.data.photo_height || ''
+                            'downloadUrl': ret.data.file_url || '',
+                            'fileid': ret.data.file_fileid || '',
+                            'uploadTime': ret.data.file_upload_time || '',
+                            'size': ret.data.file_size || '',
+                            'md5': ret.data.file_md5 || '',
+                            'width': ret.data.photo_width || '',
+                            'height': ret.data.photo_height || ''
                         }
                     }
 
                     callback(result);
                 } else {
-                    callback({'httpcode':res.statusCode, 'code':-1, 'message':'response '+data.toString()+' is not json', 'data':{}});
+                    callback({'httpcode': res.statusCode, 'code': -1, 'message': 'response ' + data.toString() + ' is not json', 'data': {}});
                 }
             });
         });
@@ -186,21 +188,23 @@ exports.stat = function(bucket, fileid, callback, userid) {
 
     } else {
         // error
-        callback({'httpcode':0, 'code':-1, 'message':'params error', 'data':{}});
+        callback({'httpcode': 0, 'code': -1, 'message': 'params error', 'data': {}});
     }
 }
 
-exports.copy = function(bucket, fileid, callback, userid) {
+exports.copy = function (bucket, fileid, callback, userid) {
 
     userid = userid || 0;
-    callback = callback || function(ret){console.log(ret)};
+    callback = callback || function (ret) {
+            console.log(ret)
+        };
 
     if (fileid && typeof callback === 'function') {
         var url = generateResUrlV2(bucket, userid, fileid, 'copy');
         var expired = 0;
-        var sign  = auth.getAppSignV2(bucket, fileid, expired);
+        var sign = auth.getAppSignV2(bucket, fileid, expired);
         var urlInfo = urlM.parse(url);
-        
+
         var headers = {};
         headers['Authorization'] = 'QCloud ' + sign;
         headers['User-Agent'] = conf.USER_AGENT();
@@ -217,23 +221,23 @@ exports.copy = function(bucket, fileid, callback, userid) {
             res.on('data', function (data) {
                 var ret = {};
                 try {
-                    var ret = JSON.parse(data.toString());
+                    ret = JSON.parse(data.toString());
                 } catch (err) {
                     ret = {};
                 }
                 if (ret) {
                     var result = {
-                        'httpcode':res.statusCode,
-                        'code':ret.code, 
-                        'message':ret.message || '', 
-                        'data':{
-                            'downloadUrl':ret.data.download_url || '', 
-                            'url':ret.data.url || '',
+                        'httpcode': res.statusCode,
+                        'code': ret.code,
+                        'message': ret.message || '',
+                        'data': {
+                            'downloadUrl': ret.data.download_url || '',
+                            'url': ret.data.url || '',
                         }
                     }
                     callback(result);
                 } else {
-                    callback({'httpcode':res.statusCode, 'code':-1, 'message':'response '+data.toString()+' is not json', 'data':{}});
+                    callback({'httpcode': res.statusCode, 'code': -1, 'message': 'response ' + data.toString() + ' is not json', 'data': {}});
                 }
             });
         });
@@ -243,9 +247,9 @@ exports.copy = function(bucket, fileid, callback, userid) {
 
     } else {
         // error
-        callback({'httpcode':0, 'code':-1, 'message':'params error', 'data':{}});
+        callback({'httpcode': 0, 'code': -1, 'message': 'params error', 'data': {}});
     }
-}
+};
 
 
 /**
@@ -254,19 +258,21 @@ exports.copy = function(bucket, fileid, callback, userid) {
  * @param  {Function} callback 用户删除完毕后执行的回调函数，可选，默认输出日志
  *                             入参为ret：{'httpcode':200,'code':0,'message':'ok','data':{...}}
  * @param  {string}   userid   用户自定义的业务ID，可选，默认为0
- * @return {NULL}   
+ * @return {NULL}
  */
-exports.delete = function(bucket, fileid, callback, userid) {
+exports.delete = function (bucket, fileid, callback, userid) {
 
     userid = userid || 0;
-    callback = callback || function(ret){console.log(ret)};
+    callback = callback || function (ret) {
+            console.log(ret)
+        };
 
     if (fileid && typeof callback === 'function') {
         var url = generateResUrlV2(bucket, userid, fileid, 'del');
         var expired = 0;
-        var sign  = auth.getAppSignV2(bucket, fileid, expired);
+        var sign = auth.getAppSignV2(bucket, fileid, expired);
         var urlInfo = urlM.parse(url);
-        
+
         var headers = {};
         headers['Authorization'] = 'QCloud ' + sign;
         headers['User-Agent'] = conf.USER_AGENT();
@@ -283,20 +289,20 @@ exports.delete = function(bucket, fileid, callback, userid) {
             res.on('data', function (data) {
                 var ret = {};
                 try {
-                    var ret = JSON.parse(data.toString());
+                    ret = JSON.parse(data.toString());
                 } catch (err) {
                     ret = {};
                 }
                 if (ret) {
                     var result = {
-                        'httpcode':res.statusCode,
-                        'code':ret.code, 
-                        'message':ret.message || '', 
-                        'data':{}
+                        'httpcode': res.statusCode,
+                        'code': ret.code,
+                        'message': ret.message || '',
+                        'data': {}
                     }
                     callback(result);
                 } else {
-                    callback({'httpcode':res.statusCode, 'code':-1, 'message':'response '+data.toString()+' is not json', 'data':{}});
+                    callback({'httpcode': res.statusCode, 'code': -1, 'message': 'response ' + data.toString() + ' is not json', 'data': {}});
                 }
             });
         });
@@ -306,13 +312,13 @@ exports.delete = function(bucket, fileid, callback, userid) {
 
     } else {
         // error
-        callback({'httpcode':0, 'code':-1, 'message':'params error', 'data':{}});
+        callback({'httpcode': 0, 'code': -1, 'message': 'params error', 'data': {}});
     }
-}
+};
 
 exports.generateResUrlV2 = function (bucket, userid, fileid, oper) {
     return generateResUrlV2(bucket, userid, fileid, oper);
-}
+};
 
 
 function generateResUrlV2(bucket, userid, fileid, oper) {
