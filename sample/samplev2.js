@@ -22,7 +22,7 @@ tencentyun.imageprocess.pornDetect(pornUrl, function(ret){
 //     console.log('getPersonIds', data);
 // });
 //
-// tencentyun.face.delPerson( '18905029911', function (data) {
+// tencentyun.face.delPerson( '1890502xxxx', function (data) {
 //     console.log('个体信息创建.delPerson', data);
 // });
 //
